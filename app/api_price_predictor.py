@@ -1,20 +1,21 @@
 from flask import Flask, request, render_template_string
 import pandas as pd
 import joblib
+import os
 
 app = Flask(__name__)
 
 # ================= LOAD MODEL & ARTIFACTS =================
-MODEL_PATH = "H:/Voyage-Analytics-Integrating-MLOps-in-Travel-Industry-/Models/"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-model = joblib.load(MODEL_PATH + "xgb_regressor.pkl")
+MODEL_DIR = os.path.join(BASE_DIR, "..", "Models")
 
-from_encoder = joblib.load(MODEL_PATH + "from_encoder.pkl")
-to_encoder = joblib.load(MODEL_PATH + "to_encoder.pkl")
-agency_encoder = joblib.load(MODEL_PATH + "agency_encoder.pkl")
-
-flight_type_map = joblib.load(MODEL_PATH + "flight_type_map.pkl")
-feature_columns = joblib.load(MODEL_PATH + "feature_columns.pkl")
+xgb_model = joblib.load(os.path.join(MODEL_DIR, "xgb_regressor.pkl"))
+from_encoder = joblib.load(os.path.join(MODEL_DIR, "from_encoder.pkl"))
+to_encoder = joblib.load(os.path.join(MODEL_DIR, "to_encoder.pkl"))
+agency_encoder = joblib.load(os.path.join(MODEL_DIR, "agency_encoder.pkl"))
+flight_type_map = joblib.load(os.path.join(MODEL_DIR, "flight_type_map.pkl"))
+feature_columns = joblib.load(os.path.join(MODEL_DIR, "feature_columns.pkl"))
 
 # ================= DROPDOWN OPTIONS =================
 from_options = from_encoder.categories_[0].tolist()
@@ -178,7 +179,7 @@ def index():
 
             X = X[feature_columns]
 
-            price = int(model.predict(X)[0])
+            price = int(xgb_model.predict(X)[0])
             prediction = f"Predicted Price: ₹ {price}"
 
         except Exception as e:
@@ -195,4 +196,5 @@ def index():
 
 # ================= RUN =================
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    app.run(host="0.0.0.0", port=8000, debug=True)
+
