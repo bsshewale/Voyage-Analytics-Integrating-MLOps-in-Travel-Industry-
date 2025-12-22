@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: flight-price-service
 spec:
-  type: NodePort   # LoadBalancer on cloud
   selector:
     app: flight-price-predictor
   ports:
-  - port: 80
-    targetPort: 8000
-    nodePort: 30007
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: NodePort

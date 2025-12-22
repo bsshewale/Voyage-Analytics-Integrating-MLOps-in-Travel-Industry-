@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: flight-price-predictor
 spec:
-  replicas: 2   # start with 2 pods
+  replicas: 2
   selector:
     matchLabels:
       app: flight-price-predictor
@@ -13,8 +13,8 @@ spec:
         app: flight-price-predictor
     spec:
       containers:
-      - name: flight-price-api
-        image: <YOUR_DOCKER_USERNAME>/flight-price-predictor:latest
+      - name: flight-price-predictor
+        image: docker.io/bsshewale/flight-price-predictor:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -25,15 +25,3 @@ spec:
           limits:
             cpu: "500m"
             memory: "1Gi"
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 8000
-          initialDelaySeconds: 10
-          periodSeconds: 5
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 8000
-          initialDelaySeconds: 30
-          periodSeconds: 10
