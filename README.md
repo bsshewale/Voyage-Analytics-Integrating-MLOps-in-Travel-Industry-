@@ -2,58 +2,98 @@
 
 ---
 
-# **Voyage Analytics: Travel Price Prediction with MLOps**
+# ✈️ Voyage Analytics: End-to-End Travel Intelligence Platform with MLOps
 
-## **Project Overview**
+## Project Overview
 
-This project demonstrates a **full MLOps pipeline** for predicting flight prices using historical travel data. It integrates **data preprocessing, machine learning modeling, REST API deployment, workflow orchestration, and CI/CD automation**.
+Voyage Analytics is an **end-to-end Machine Learning and MLOps project** built for the travel industry.
+It demonstrates how multiple ML use cases can be **designed, trained, orchestrated, tracked, and deployed** using production-grade tools and workflows.
 
-Key features:
+The platform covers:
 
-* **Regression modeling** with Decision Tree, Random Forest, and XGBoost
-* **Preprocessing and feature engineering**, including target encoding and ordinal mapping
-* **Model tracking** with MLflow for experiments and versioning
-* **Automated workflows** using Apache Airflow DAGs
-* **Deployment** via Docker and Kubernetes for scalability
-* **CI/CD** pipeline with Jenkins for automated build, test, and deployment
+* **Flight price prediction**
+* **User profiling (gender classification)**
+* **Hotel recommendation system**
+
+and integrates **MLflow, Airflow, Docker, Kubernetes, Jenkins, APIs, and Streamlit** to simulate a real-world ML system.
 
 ---
 
-## **Project Structure**
+## 🔍 Key Features
+
+* **Flight Price Prediction**
+
+  * Regression models: Decision Tree, Random Forest, XGBoost
+  * Feature engineering with target encoding and ordinal mapping
+  * REST API for real-time inference
+
+* **Gender Classification**
+
+  * TF-IDF (character-level) + Logistic Regression
+  * Classes: `male`, `female`, `none`
+  * Streamlit UI for interactive predictions
+
+* **Hotel Recommendation System**
+
+  * Collaborative filtering using implicit feedback
+  * Learns from booking frequency and total spend
+  * Streamlit dashboard for recommendations and insights
+
+* **MLOps & Engineering**
+
+  * Experiment tracking & model versioning with MLflow
+  * Workflow orchestration with Apache Airflow
+  * CI/CD pipeline using Jenkins
+  * Containerized deployment using Docker
+  * Scalable serving via Kubernetes (HPA enabled)
+
+---
+
+## 🏗️ Project Structure
 
 ```
 .
-├── app/                       # Flask API code
-│   └── api_price_predictor.py
-├── airflow/                    # Apache Airflow DAGs
-│   └── dags/travel_price_regression_dag.py
-├── data/                       # Sample datasets
-│   ├── flights.csv
-│   ├── hotels.csv
-│   └── users.csv
-├── k8s/                        # Kubernetes deployment files
+├── airflow/                     # Apache Airflow DAGs
+│   └── dags/
+│       └── travel_price_regression_dag.py
+│
+├── app/                         # APIs & Streamlit apps
+│   ├── api_price_predictor.py
+│   ├── st_gender_classifier.py
+│   └── st_travel_recommander.py
+│
+├── data/                        # Raw datasets
+│   ├── flight_prediction/
+│   │   ├── flights.csv
+│   │   └── processed_flights.csv
+│   ├── gender_classifier/
+│   │   └── users.csv
+│   └── hotel_recommander/
+│       └── hotels.csv
+│
+├── src/                         # Core ML logic
+│   ├── flight_prediction/
+│   │   ├── preprocessing.py
+│   │   └── train.py
+│   ├── gender_classifier/
+│   │   ├── gender_train.py
+│   │   └── inference.py
+│   └── recommander/
+│       ├── preprocessor.py
+│       ├── similarity.py
+│       └── recommander.py
+│
+├── notebooks/                   # Experimentation & analysis
+│   └── Price_predictor.ipynb
+│
+├── k8s/                         # Kubernetes manifests
 │   ├── deployment.yaml
 │   ├── service.yaml
 │   └── hpa.yaml
-├── models/                     # Pretrained model & encoders
-│   ├── xgb_regressor.pkl
-│   ├── from_encoder.pkl
-│   ├── to_encoder.pkl
-│   ├── agency_encoder.pkl
-│   ├── flight_type_map.pkl
-│   └── feature_columns.pkl
-├── notebooks/                  # Exploratory analysis & model development
-│   └── Price_predictor.ipynb
-├── src/                        # Core modules
-│   ├── __init__.py
-│   ├── config.py
-│   ├── data_loader.py
-│   ├── preprocessing.py
-│   ├── model.py
-│   └── train.py
-├── Dockerfile                  # Docker configuration
-├── Jenkinsfile                 # CI/CD pipeline configuration
-├── requirements.txt            # Python dependencies
+│
+├── Dockerfile
+├── Jenkinsfile
+├── requirements.txt
 ├── .gitignore
 ├── .dockerignore
 ├── README.md
@@ -62,87 +102,138 @@ Key features:
 
 ---
 
-## **Getting Started**
+## 🛠️ Tech Stack
 
-### **1. Clone the repository**
+### Machine Learning
+
+* Python
+* Pandas, NumPy
+* Scikit-learn
+* XGBoost
+* TF-IDF
+* Collaborative Filtering
+
+### MLOps & Deployment
+
+* Apache Airflow
+* MLflow
+* Docker
+* Kubernetes (HPA)
+* Jenkins (CI/CD)
+
+### Serving & Visualization
+
+* Flask (REST APIs)
+* Streamlit (interactive dashboards)
+
+---
+
+## ▶️ Getting Started
+
+### 1️⃣ Clone the repository
 
 ```bash
 git clone https://github.com/bsshewale/Voyage-Analytics-Integrating-MLOps-in-Travel-Industry-.git
 cd Voyage-Analytics-Integrating-MLOps-in-Travel-Industry-
 ```
 
-### **2. Install dependencies**
+### 2️⃣ Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### **3. Run the training script**
+---
+
+## 📈 Flight Price Model Training
 
 ```bash
-python src/train.py
+python src/flight_prediction/train.py
 ```
 
-* Trains the XGBoost regression model
+* Trains regression models
 * Logs parameters, metrics, and artifacts to MLflow
+* Supports experiment comparison and model versioning
 
 ---
 
-## **MLflow Model Tracking**
+## 📊 MLflow Model Tracking
 
-* Start MLflow UI:
+Start MLflow UI:
 
 ```bash
 mlflow ui
 ```
 
-* Access at [http://localhost:5000](http://localhost:5000)
-* Track experiments, compare runs, and register model versions
+Access at:
+
+```
+http://localhost:5000
+```
+
+Track:
+
+* Experiments
+* Model parameters
+* Metrics
+* Artifacts
 
 ---
 
-## **Flask API for Real-Time Predictions**
+## 🌐 APIs & Streamlit Apps
 
-* Start the API:
+### Flight Price Prediction API
 
 ```bash
 python app/api_price_predictor.py
 ```
-![Price_predictor](https://github.com/user-attachments/assets/d443aae2-3288-4685-9c7c-1a791450dc4b)
+![Price_predictor](https://github.com/user-attachments/assets/a2419305-8688-4d03-95e7-810866b0fd96)
+Example request:
 
-* Example request:
-
-```http
-POST /predict
-Content-Type: application/json
-
+```json
 {
-    "from": "Recife (PE)",
-    "to": "Florianopolis (SC)",
-    "flightType": "firstClass",
-    "time": 1.76,
-    "distance": 676.53,
-    "agency": "FlyingDrops",
-    "day": 26,
-    "month": 9,
-    "year": 2019
+  "from": "Recife (PE)",
+  "to": "Florianopolis (SC)",
+  "flightType": "firstClass",
+  "time": 1.76,
+  "distance": 676.53,
+  "agency": "FlyingDrops",
+  "day": 26,
+  "month": 9,
+  "year": 2019
 }
 ```
 
-* Returns the **predicted flight price** in real time
+---
+
+### Streamlit Dashboards
+
+```bash
+streamlit run app/st_travel_recommander.py
+streamlit run app/st_gender_classifier.py
+```
+Hotel Recommander
+![Hotel recommander](https://github.com/user-attachments/assets/3002854b-f893-4d02-9933-96d036c817b7)
+
+Gender Classifier
+![gender classification](https://github.com/user-attachments/assets/0f45b9dd-1ddb-4243-ab90-c0337055e901)
 
 ---
 
-## **Workflow Automation with Airflow**
+## ⚙️ Workflow Automation with Airflow
 
-* DAG: `travel_price_regression_dag.py` orchestrates:
+Airflow DAG:
 
-  * Data ingestion
-  * Preprocessing
-  * Model training
-  * MLflow logging
+* `travel_price_regression_dag.py`
 
-* Start Airflow:
+Pipeline stages:
+
+* Data ingestion
+* Preprocessing
+* Model training
+* MLflow logging
+
+Start Airflow:
 
 ```bash
 airflow db init
@@ -150,74 +241,61 @@ airflow webserver --port 8080
 airflow scheduler
 ```
 
-* Access DAGs at [http://localhost:8080](http://localhost:8080)
+Access UI:
+
+```
+http://localhost:8080
+```
 
 ---
 
-## **Docker & Kubernetes Deployment**
-
-* Build Docker image:
+## 🐳 Docker & Kubernetes Deployment
 
 ```bash
 docker build -t bsshewale/flight-price-predictor:latest .
-```
-
-* Push to Docker Hub:
-
-```bash
 docker push bsshewale/flight-price-predictor:latest
+kubectl apply -f k8s/
 ```
 
-* Deploy to Kubernetes:
-
-```bash
-kubectl apply -f k8s/deployment.yaml
-kubectl apply -f k8s/service.yaml
-kubectl apply -f k8s/hpa.yaml
-```
-
-* Scalable deployment with **Horizontal Pod Autoscaling (HPA)**
+Supports **Horizontal Pod Autoscaling (HPA)**.
 
 ---
 
-## **CI/CD with Jenkins**
+## 🔁 CI/CD with Jenkins
 
-* Jenkins pipeline defined in `Jenkinsfile`:
+Pipeline stages:
 
-  1. Checkout repository
-  2. Install dependencies
-  3. Run basic tests
-  4. Build and push Docker image
-  5. Deploy to Kubernetes cluster
+* Code checkout
+* Dependency installation
+* Model & app validation
+* Docker build & push
+* Kubernetes deployment
 
-* Credentials (`dockerhub-creds`, `kubeconfig`) securely stored in Jenkins
-
----
-
-## **Project Highlights**
-
-* **Full MLOps pipeline** from data ingestion → modeling → deployment
-* **Automated workflows** via Airflow
-* **Model versioning & tracking** via MLflow
-* **CI/CD automation** with Jenkins
-* **Scalable deployment** using Docker + Kubernetes
+Secrets managed via Jenkins credentials.
 
 ---
 
-## **Requirements**
+## ⚠️ Important Note
 
-* Python ≥ 3.10
-* Docker
-* Kubernetes cluster (minikube or cloud)
-* Jenkins (optional for CI/CD)
-* Apache Airflow
-* MLflow
+> Trained model artifacts (`.pkl`, `.joblib`, `mlruns/`) are **not committed** to GitHub.
+> Models are generated via pipelines and tracked using **MLflow**, ensuring clean version control and reproducibility.
 
 ---
 
-## **License**
+## 📌 Project Highlights
 
-This project is licensed under the [MIT License](LICENSE).
+* Multi-model ML system in a single platform
+* Production-style MLOps workflows
+* Modular and scalable architecture
+* Resume-ready industry project
+
+---
+
+## 👤 Author
+
+**Bharat Shewale**
+MS in Data Science & AI
+Aspiring ML Engineer / Data Scientist
 
 ---
 
