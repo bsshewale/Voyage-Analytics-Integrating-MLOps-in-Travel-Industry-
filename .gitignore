@@ -1,7 +1,13 @@
-# Python virtual environments
+# datasets
+
+
+# MLflow
+mlruns/
+# Virtual environments
+airflow_env/
 myenv/
 venv/
-.env
+.env/
 
 # Python cache files
 __pycache__/

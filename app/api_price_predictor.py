@@ -8,7 +8,7 @@ app = Flask(__name__)
 # ================= LOAD MODEL & ARTIFACTS =================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-MODEL_DIR = os.path.join(BASE_DIR, "..", "Models")
+MODEL_DIR = os.path.join(BASE_DIR, "..", "model", "flight_prediction")
 
 xgb_model = joblib.load(os.path.join(MODEL_DIR, "xgb_regressor.pkl"))
 from_encoder = joblib.load(os.path.join(MODEL_DIR, "from_encoder.pkl"))
