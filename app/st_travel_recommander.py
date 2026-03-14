@@ -16,6 +16,7 @@ DATA_PATH = "H:\\Voyage-Analytics-Integrating-MLOps-in-Travel-Industry-\\data\\h
 user_hotel_matrix = build_user_hotel_matrix(DATA_PATH)
 similarity_df = compute_user_similarity(user_hotel_matrix)
 
+
 user_id = st.sidebar.selectbox(
     "Select User ID",
     user_hotel_matrix.index.tolist()
