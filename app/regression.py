@@ -1,68 +1,98 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
 import joblib
-import numpy as np
 
 # Load model
-linear_model = joblib.load(
-'H:\\Voyage-Analytics-Integrating-MLOps-in-Travel-Industry\\model\\flight_prediction\\linear_regression_model.joblib'
-)
-
-# Load feature order
-model_features = joblib.load(
-'H:\\Voyage-Analytics-Integrating-MLOps-in-Travel-Industry\\model\\flight_prediction\\model_features.joblib'
-)
+model = joblib.load("H:\\Voyage-Analytics-Integrating-MLOps-in-Travel-Industry-\model\\flight_prediction\linear_regression_model.joblib")
 
 # Load categorical columns
-categorical_cols = joblib.load(
-'H:\\Voyage-Analytics-Integrating-MLOps-in-Travel-Industry\\model\\flight_prediction\\categorical_columns_for_encoding.joblib'
+categorical_cols = joblib.load("H:\\Voyage-Analytics-Integrating-MLOps-in-Travel-Industry-\model\\flight_prediction\categorical_columns_for_encoding.joblib")
+
+st.title("✈️ Flight Price Prediction App")
+
+st.write("Enter flight details to predict the price")
+
+# User Inputs
+distance = st.number_input("Distance (km)", min_value=0.0)
+
+month = st.selectbox(
+    "Month",
+    list(range(1, 13))
 )
 
-# Load dataset for dropdown values
-df = pd.read_csv(
-'H:\\Voyage-Analytics-Integrating-MLOps-in-Travel-Industry\\data\\flight_prediction\\processed_flights.csv'
+day_of_week = st.selectbox(
+    "Day of Week (0 = Monday, 6 = Sunday)",
+    list(range(7))
 )
 
-# UI
-st.title("Flight Price Prediction App")
+from_city = st.selectbox(
+    "From City",
+    [
+        "Aracaju (SE)",
+        "Brasilia (DF)",
+        "Campo Grande (MS)",
+        "Florianopolis (SC)",
+        "Natal (RN)",
+        "Recife (PE)",
+        "Rio de Janeiro (RJ)",
+        "Salvador (BH)",
+        "Sao Paulo (SP)"
+    ]
+)
 
-st.sidebar.header("Flight Details")
+to_city = st.selectbox(
+    "To City",
+    [
+        "Aracaju (SE)",
+        "Brasilia (DF)",
+        "Campo Grande (MS)",
+        "Florianopolis (SC)",
+        "Natal (RN)",
+        "Recife (PE)",
+        "Rio de Janeiro (RJ)",
+        "Salvador (BH)",
+        "Sao Paulo (SP)"
+    ]
+)
 
-distance = st.sidebar.slider("Distance (km)",100.0,1000.0,500.0)
-month = st.sidebar.slider("Month",1,12,6)
-day_of_week = st.sidebar.slider("Day of Week",0,6,3)
+flight_type = st.selectbox(
+    "Flight Type",
+    ["economic", "firstClass", "premium"]
+)
 
-unique_from = df['from'].unique().tolist()
-unique_to = df['to'].unique().tolist()
-unique_flightType = df['flightType'].unique().tolist()
-unique_agency = df['agency'].unique().tolist()
+agency = st.selectbox(
+    "Agency",
+    ["CloudFy", "FlyingDrops", "Rainbow"]
+)
 
-flight_from = st.sidebar.selectbox("Origin City",sorted(unique_from))
-flight_to = st.sidebar.selectbox("Destination City",sorted(unique_to))
-flight_type = st.sidebar.selectbox("Flight Type",sorted(unique_flightType))
-agency = st.sidebar.selectbox("Agency",sorted(unique_agency))
+# Prediction Button
+if st.button("Predict Price"):
 
-input_data = {
-'distance':distance,
-'month':month,
-'day_of_week':day_of_week,
-'from':flight_from,
-'to':flight_to,
-'flightType':flight_type,
-'agency':agency
-}
+    input_data = {
+        "distance": distance,
+        "month": month,
+        "day_of_week": day_of_week,
+        "from": from_city,
+        "to": to_city,
+        "flightType": flight_type,
+        "agency": agency
+    }
 
-input_df = pd.DataFrame([input_data])
+    df = pd.DataFrame([input_data])
 
-input_encoded = pd.get_dummies(input_df,columns=categorical_cols)
+    # One-hot encoding
+    df_encoded = pd.get_dummies(df, columns=categorical_cols)
 
-missing_cols = set(model_features) - set(input_encoded.columns)
+    # Match training features
+    model_features = model.feature_names_in_
 
-for c in missing_cols:
-    input_encoded[c] = 0
+    for col in model_features:
+        if col not in df_encoded.columns:
+            df_encoded[col] = 0
 
-input_final = input_encoded[model_features]
+    df_encoded = df_encoded[model_features]
 
-if st.sidebar.button("Predict Price"):
-    prediction = linear_model.predict(input_final)[0]
-    st.success(f"Predicted Flight Price: ${prediction:,.2f}")
+    # Predict
+    prediction = model.predict(df_encoded)
+
+    st.success(f"💰 Predicted Flight Price: {prediction[0]:.2f}")
