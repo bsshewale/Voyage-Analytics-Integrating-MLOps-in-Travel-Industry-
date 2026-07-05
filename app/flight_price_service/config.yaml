@@ -1,0 +1,27 @@
+data:
+  raw_data_path: "data/raw/flights.csv"
+  processed_data_path: "data/processed/flights_processed.csv"
+
+models:
+  save_dir: "models"
+  model_name: "xgb_regressor.pkl"
+  from_encoder: "from_encoder.pkl"
+  to_encoder: "to_encoder.pkl"
+  agency_encoder: "agency_encoder.pkl"
+  feature_columns: "feature_columns.pkl"
+  flight_type_map: "flight_type_map.pkl"
+
+training:
+  test_size: 0.2
+  random_state: 42
+
+xgboost:
+  n_estimators: 500
+  learning_rate: 0.08
+  max_depth: 5
+  reg_alpha: 0.0007787658410143283
+  reg_lambda: 3.47
+  subsample: 0.88
+
+logging:
+  level: INFO
