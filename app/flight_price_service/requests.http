@@ -1,0 +1,23 @@
+### Home
+GET http://127.0.0.1:5000/
+
+###
+
+### Health
+GET http://127.0.0.1:5000/health
+
+###
+
+### Predict Flight Price
+POST http://127.0.0.1:5000/predict
+Content-Type: application/json
+
+{
+    "from": "Recife (PE)",
+    "to": "Florianopolis (SC)",
+    "flightType": "firstClass",
+    "agency": "FlyingDrops",
+    "time": 1.76,
+    "distance": 676.53,
+    "date": "2019-09-26"
+}
