@@ -1,17 +1,18 @@
 FROM python:3.11-slim
 
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Install dependencies
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
-COPY . .
+COPY app/flight_price_service ./flight_price_service
 
-# Expose port
+WORKDIR /app/flight_price_service
+
 EXPOSE 5000
 
-# Run API
 CMD ["python", "api.py"]
