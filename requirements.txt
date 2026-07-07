@@ -7,3 +7,5 @@ flask
 XGBoost
 joblib
 streamlit
+requests
+docker
