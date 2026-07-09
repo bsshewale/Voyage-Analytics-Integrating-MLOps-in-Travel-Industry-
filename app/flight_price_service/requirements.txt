@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+seaborn
+matplotlib
+flask
+XGBoost
+joblib
+streamlit
+requests
+docker
