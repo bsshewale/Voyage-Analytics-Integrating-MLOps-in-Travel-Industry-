@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: flight-price-service
+
+spec:
+  selector:
+    app: flight-price-service
+
+  ports:
+  - port: 8501
+    targetPort: 8501
+
+  type: NodePort

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: flight-price-service
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: flight-price-service
+
+  template:
+    metadata:
+      labels:
+        app: flight-price-service
+
+    spec:
+      containers:
+      - name: flight-price-service
+
+        image: flight-price-service:v3
+
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 8501
